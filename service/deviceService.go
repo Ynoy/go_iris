@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-var pageSize = 100000
+var pageSize = 500000
 
 func QueryDeviceInfo(status int) (int, error) {
 	// 根据ID查询用户
@@ -87,22 +87,22 @@ func worker(jobChan chan int, i int, status int) {
 	//fmt.Println("====start worker=====")
 	//start := time.Now()
 
-	deviceInfos, _ := dto.QueryDeviceInfos(status, i, pageSize)
-	fmt.Printf("index:%d", i)
-	fmt.Printf("zip: %v.csv\n", i+1)
-
-	csvBuffer := Csv(deviceInfos, i)
-
-	// 将数据存入csv文件，并压缩
-	csvFile, err := os.Create(strconv.Itoa(i+1) + ".csv")
-	if err != nil {
-		fmt.Println("open file is failed, err: ", err)
-	}
-	// 延迟关闭
-	defer csvFile.Close()
-	csvFile.WriteString("\xEF\xBB\xBF")
-
-	csvFile.Write(csvBuffer.Bytes())
+	 dto.QueryDeviceInfos(status, i, pageSize)
+	//fmt.Printf("index:%d", i)
+	//fmt.Printf("zip: %v.csv\n", i+1)
+	//
+	//csvBuffer := Csv(deviceInfos, i)
+	//
+	//// 将数据存入csv文件，并压缩
+	//csvFile, err := os.Create(strconv.Itoa(i+1) + ".csv")
+	//if err != nil {
+	//	fmt.Println("open file is failed, err: ", err)
+	//}
+	//// 延迟关闭
+	//defer csvFile.Close()
+	//csvFile.WriteString("\xEF\xBB\xBF")
+	//
+	//csvFile.Write(csvBuffer.Bytes())
 
 	////结束时间点
 	//fmt.Println("====end worker=====")
@@ -139,10 +139,10 @@ func dealWithDB(counts int, status int) {
 /*
 	初始化csv文件Buffer、Writer
  */
-func Csv(deviceInfos []*models.DeviceInfo, index int) *bytes.Buffer {
+func Csv(deviceInfos [][]string, index int) *bytes.Buffer {
 	csvBuffer := bytes.NewBuffer(nil)
 	csvWriter := csv.NewWriter(csvBuffer)
-	if err := csvWriter.WriteAll(getData(deviceInfos, index)); err != nil {
+	if err := csvWriter.WriteAll(deviceInfos); err != nil {
 		panic(err)
 	}
 

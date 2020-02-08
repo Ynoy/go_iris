@@ -3,7 +3,6 @@ package controller
 import (
 	"github.com/kataras/iris"
 	"lbps/dto"
-	"lbps/service"
 )
 
 func DeviceInfoAction(ctx iris.Context) {
@@ -17,11 +16,6 @@ func DeviceInfoAction(ctx iris.Context) {
 		return
 	}
 
-	// 根据ID获取用户
-	if counts, err = service.QueryDeviceInfo(params.Status); err != nil {
-		ctx.JSON(err)
-		return
-	}
 
 	//if len(users) == 0 {
 	//	ctx.JSON(errors.NoDataError())
@@ -30,3 +24,5 @@ func DeviceInfoAction(ctx iris.Context) {
 
 	ctx.JSON(iris.Map{"code": 1000, "data": counts })
 }
+
+// 执行shell command
