@@ -2,13 +2,12 @@ package main
 
 import (
 	"flag"
-	"os"
 	"fmt"
 	"github.com/lestrrat-go/file-rotatelogs"
 	"github.com/sirupsen/logrus"
+	"os"
 
 	. "lbps/config"
-	"lbps/utility/db"
 	"lbps/web"
 )
 
@@ -29,10 +28,10 @@ func main() {
 	logrus.SetReportCaller(true)
 
 	// 启动mysql
-	defer db.CloseMysql()
-	fmt.Print("StartMysql...\r")
-	checkErr("StartMysql", db.StartMysql(Conf.MysqlDsn, Conf.MysqlMaxIdle, Conf.MysqlMaxOpen))
-	fmt.Print("StartMysql Success!!!\n")
+	//defer db.CloseMysql()
+	//fmt.Print("StartMysql...\r")
+	//checkErr("StartMysql", db.StartMysql(Conf.MysqlDsn, Conf.MysqlMaxIdle, Conf.MysqlMaxOpen))
+	//fmt.Print("StartMysql Success!!!\n")
 
 
 	// 开始运行iris框架
