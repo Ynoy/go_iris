@@ -1,8 +1,8 @@
 package dto
 
 import (
+	"fmt"
 	"github.com/kataras/iris"
-	"lbps/errors"
 )
 
 type DeviceInfo struct {
@@ -15,9 +15,7 @@ type DeviceInfo struct {
 }
 
 func (u *DeviceInfo) Bind(ctx iris.Context) error {
-	if err := ctx.ReadForm(u); err != nil {
-		return errors.ParamError("invalid form format")
-	}
-
+	err := ctx.ReadForm(u)
+	fmt.Println(err)
 	return nil
 }

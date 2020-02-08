@@ -22,5 +22,5 @@ func InnerRoute(app *iris.Application) {
 	app.Get("/ping", func(ctx iris.Context) { ctx.WriteString("pong") })
 
 	// 导出Excel数据
-	app.Get("/excel", controller.DeviceInfoAction)
+	app.Post("/export/excel", controller.DeviceInfoAction)
 }
