@@ -73,8 +73,8 @@ func constructionSQL(ctx iris.Context) string {
 
 	sql := "select * from `t_device_perception_status`"
 
-	if  status :=ctx.PostValue("status"); len(status) != 0 {
-		sql = sql + " where status = "+ status
+	if  status,err :=ctx.PostValueInt("status"); err==nil&&(status==0||status==1) {
+		sql = sql + " where status = "+ strconv.Itoa(status)
 	}
 
 	if serverIP :=ctx.PostValue("serverIP"); len(serverIP) != 0 {
@@ -97,9 +97,9 @@ func constructionSQL(ctx iris.Context) string {
 
 	if deviceMac :=ctx.PostValue("deviceMac"); len(deviceMac) != 0 {
 		if strings.Contains(sql, "where") {
-			sql =sql + " and device_mac = \""+deviceMac+"\""
+			sql =sql + " and device_mac like \"%"+deviceMac+"%\""
 		}else {
-			sql = sql + " where device_mac = \""+deviceMac+"\""
+			sql = sql + " where device_mac like \"%"+deviceMac+"%\""
 		}
 
 	}
