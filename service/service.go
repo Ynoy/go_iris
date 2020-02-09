@@ -71,7 +71,13 @@ func execShell(sql string) string {
 */
 func constructionSQL(ctx iris.Context) string {
 
-	sql := "select * from `t_device_perception_status`"
+	//sql := "select * from `t_device_perception_status`"
+
+	sql := "select idcode,service_type,hardware_type,device_mac,wifi_mac,device_ip,"+
+		"server_ip,pppoe_id,pppoe_password,from_unixtime(SUBSTRING(ctime,1,10)),"+
+		"status,manual_server_from,manual_server_to,manual_token,province,city,isp,fw_version,per_version,"+
+		"original_filiale_id,original_city_id,original_province_id,community_id,business_hall_id,district_bureau_id,"+
+		"bandwith from `t_device_perception_status`"
 
 	if  status,err :=ctx.PostValueInt("status"); err==nil&&(status==0||status==1) {
 		sql = sql + " where status = "+ strconv.Itoa(status)
@@ -88,9 +94,9 @@ func constructionSQL(ctx iris.Context) string {
 
 	if pppoeId :=ctx.PostValue("pppoeId"); len(pppoeId) != 0 {
 		if strings.Contains(sql, "where") {
-			sql =sql + " and pppoe_id = \""+pppoeId+"\""
+			sql =sql + " and pppoe_id like \"%"+pppoeId+"%\""
 		}else {
-			sql = sql + " where pppoe_id = \""+pppoeId+"\""
+			sql = sql + " where pppoe_id like \"%"+pppoeId+"%\""
 		}
 
 	}
@@ -106,18 +112,18 @@ func constructionSQL(ctx iris.Context) string {
 
 	if model :=ctx.PostValue("model"); len(model) != 0 {
 		if strings.Contains(sql, "where") {
-			sql =sql + " and hardware_type = \""+model+"\""
+			sql =sql + " and hardware_type like \"%"+model+"%\""
 		}else {
-			sql = sql + " where hardware_type = \""+model+"\""
+			sql = sql + " where hardware_type like \"%"+model+"%\""
 		}
 
 	}
 
 	if idcode :=ctx.PostValue("idcode"); len(idcode) != 0 {
 		if strings.Contains(sql, "where") {
-			sql =sql + " and idcode = \""+idcode+"\""
+			sql =sql + " and idcode like \"%"+idcode+"%\""
 		}else {
-			sql = sql + " where idcode = \""+idcode+"\""
+			sql = sql + " where idcode like \"%"+idcode+"%\""
 		}
 
 	}
